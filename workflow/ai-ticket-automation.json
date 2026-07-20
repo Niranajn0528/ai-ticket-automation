@@ -1,0 +1,440 @@
+{
+  "name": "AI Ticket Automation v2",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "3a63989a-3540-468a-bd0b-108665ee9e60",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "f0a4c7f6-ed01-45eb-8180-7cb79bb4d2b9",
+              "name": "=issue",
+              "value": "=5G SA data outage",
+              "type": "string"
+            },
+            {
+              "id": "964ea975-c3ca-4a7c-9279-35b84a13e364",
+              "name": "=network_element",
+              "value": "=UPF",
+              "type": "string"
+            },
+            {
+              "id": "73fd3eb1-0571-46ce-8064-96074b7c288b",
+              "name": "=subscriber_impact",
+              "value": "=2500 users",
+              "type": "string"
+            },
+            {
+              "id": "ca7ae4fa-09b1-4514-b1a1-5c7d5aadb4bb",
+              "name": "=region",
+              "value": "=Bangalore",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        208,
+        0
+      ],
+      "id": "a563d0f6-ca56-4ea2-ab5e-aece65a3ac7c",
+      "name": "Edit Fields"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a Telecom Incident AI Agent.\n\nAnalyze the telecom incident.\n\nReturn ONLY valid JSON.\n\nFormat:\n{\n  \"issue_type\": \"\",\n  \"severity\": \"\",\n  \"priority\": \"\",\n  \"assignment_team\": \"\",\n  \"root_cause\": \"\",\n  \"recommended_action\": \"\",\n  \"escalation_required\": false\n}",
+        "messages": {
+          "messageValues": [
+            {
+              "type": "HumanMessagePromptTemplate",
+              "message": "=Issue:\n{{$json.issue}}\n\nNetwork Element:\n{{$json.network_element}}\n\nSubscriber Impact:\n{{$json.subscriber_impact}}\n\nRegion:\n{{$json.region}}"
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        416,
+        0
+      ],
+      "id": "c76d8083-e8a6-4a4b-8b98-d83cf501b2d9",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "model": "llama-3.3-70b-versatile",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        352,
+        208
+      ],
+      "id": "77811ec8-e681-4329-a5e5-daa3e643ad7e",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "PlAjJlgiud39IeoJ",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "4024a6c5-6363-4277-b602-74b53d3424a6",
+              "name": "=issue_type",
+              "value": "={{ JSON.parse($json.text.replace(/```json|```/g, '').trim()).issue_type }}",
+              "type": "string"
+            },
+            {
+              "id": "67d6533e-1d93-4ad4-ba35-f14c6ac6ce88",
+              "name": "=severity",
+              "value": "={{ JSON.parse($json.text.replace(/```json|```/g, '').trim()).severity }}",
+              "type": "string"
+            },
+            {
+              "id": "d2228d97-90d2-4324-b94b-0dc5a1e31849",
+              "name": "=priority",
+              "value": "={{ JSON.parse($json.text.replace(/```json|```/g, '').trim()).priority }}",
+              "type": "string"
+            },
+            {
+              "id": "5e2db744-5b21-4ccd-ab51-2054f1d77cee",
+              "name": "=assignment_team",
+              "value": "={{ JSON.parse($json.text.replace(/```json|```/g, '').trim()).assignment_team }}",
+              "type": "string"
+            },
+            {
+              "id": "693f2776-aa41-4ea3-adac-b9cea05aa175",
+              "name": "=root_cause",
+              "value": "={{ JSON.parse($json.text.replace(/```json|```/g, '').trim()).root_cause }}",
+              "type": "string"
+            },
+            {
+              "id": "61b46439-9476-4f1f-91a8-282dca95a505",
+              "name": "=recommended_action",
+              "value": "={{ JSON.parse($json.text.replace(/```json|```/g, '').trim()).recommended_action }}",
+              "type": "string"
+            },
+            {
+              "id": "b3d81079-dea8-4d8d-99e3-682a12440929",
+              "name": "=escalation_required",
+              "value": "={{ JSON.parse($json.text.replace(/```json|```/g, '').trim()).escalation_required }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        768,
+        0
+      ],
+      "id": "6c39f058-35fc-4648-a364-cd6c4f36329f",
+      "name": "Edit Fields1"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1MjBoo7W1jfRm1_2Nv_0fkShX_x4km_2RPcja33B2vBU",
+          "mode": "list",
+          "cachedResultName": "AI Email Analysis",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1MjBoo7W1jfRm1_2Nv_0fkShX_x4km_2RPcja33B2vBU/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1709026691,
+          "mode": "list",
+          "cachedResultName": "Telecom_AI_Tickets_v2",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1MjBoo7W1jfRm1_2Nv_0fkShX_x4km_2RPcja33B2vBU/edit#gid=1709026691"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Ticket ID": "={{ \"INC-\" + Date.now() }}",
+            "Issue Type": "={{$json.issue_type}}",
+            "Severity": "={{$json.severity}}",
+            "Priority": "={{$json.priority}}",
+            "Assignment Team": "={{$json.assignment_team}}",
+            "Root Cause": "={{$json.root_cause}}",
+            "Recommended Action": "={{$json.recommended_action}}",
+            "Escalation Required": "={{$json.escalation_required}}",
+            "Timestamp": "={{ $now }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Ticket ID",
+              "displayName": "Ticket ID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Issue Type",
+              "displayName": "Issue Type",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Severity",
+              "displayName": "Severity",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Priority",
+              "displayName": "Priority",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Assignment Team",
+              "displayName": "Assignment Team",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Root Cause",
+              "displayName": "Root Cause",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Recommended Action",
+              "displayName": "Recommended Action",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Escalation Required",
+              "displayName": "Escalation Required",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Timestamp",
+              "displayName": "Timestamp",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        976,
+        0
+      ],
+      "id": "29510e7d-85c8-401a-81c3-1addbdb603c3",
+      "name": "Append row in sheet",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "OMlYWQEiATS1gTlF",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "733e43b0-6ed8-4cb9-b03b-2d1075664cfe",
+              "leftValue": "={{$json.severity}}",
+              "rightValue": "High",
+              "operator": {
+                "type": "string",
+                "operation": "contains"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        960,
+        144
+      ],
+      "id": "1975d422-68bf-4062-8ac6-a987d9ca4b9a",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "sendTo": "niranjan.arathi28@gmail.com",
+        "subject": "={{ \"P1 Critical Telecom Incident - \" + $json.issue_type }}",
+        "message": "=🚨 TELECOM INCIDENT ALERT\n\n----------------------------------\n\nTicket ID:\n{{ \"INC-\" + Date.now() }}\n\nIssue Type:\n{{$json.issue_type}}\n\nSeverity:\n{{$json.severity}}\n\nPriority:\n{{$json.priority}}\n\nAssignment Team:\n{{$json.assignment_team}}\n\nRoot Cause:\n{{$json.root_cause}}\n\nRecommended Action:\n{{$json.recommended_action}}\n\nEscalation Required:\n{{$json.escalation_required}}\n\nTimestamp:\n{{ $now }}\n\n----------------------------------",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1248,
+        96
+      ],
+      "id": "a1f7bc4b-e9d4-418f-b331-e00ea054b21c",
+      "name": "Send a message",
+      "webhookId": "03acb40c-b3c6-4a94-bbf2-ee416dbef773",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "6QWqgT6JJuGCiocc",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Edit Fields1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields1": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        []
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "d99f35b7-c946-41eb-bb69-336706ecac0a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "fadcc29a1ef0d6c91da020448df2bbe59980d81b38e29237657fe57d15485c80"
+  },
+  "id": "YZbz19dIrD6pdIla",
+  "tags": []
+}
