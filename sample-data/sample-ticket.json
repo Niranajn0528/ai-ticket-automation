@@ -1,0 +1,15 @@
+{
+  "ticket_id": "INC-20260722-001",
+  "created_on": "2026-07-22T10:15:32Z",
+  "network_element": "UPF",
+  "location": "Bangalore",
+  "issue_type": "PFCP Association Failure",
+  "severity": "Critical",
+  "priority": "P1",
+  "status": "Open",
+  "assignment_team": "Core Network Team",
+  "description": "PFCP Association between UPF and SMF has failed, impacting user plane connectivity.",
+  "affected_service": "5G Core",
+  "reported_by": "AI Ticket Automation",
+  "escalation": true
+}

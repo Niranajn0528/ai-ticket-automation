@@ -1,0 +1,9 @@
+Incident ID,Timestamp,Network Element,Location,Issue Type,Alarm,Severity,Status
+INC-20260722-001,2026-07-22 10:15:32,UPF,Bangalore,PFCP Failure,PFCP Association Failure,Critical,Open
+INC-20260722-002,2026-07-22 10:32:10,SMF,Hyderabad,N4 Session Failure,N4 Session Timeout,High,Open
+INC-20260722-003,2026-07-22 11:08:45,AMF,Chennai,Registration Failure,UE Registration Reject,Medium,Open
+INC-20260722-004,2026-07-22 11:20:19,UDM,Mumbai,Subscriber Lookup,Subscriber Not Found,Low,Open
+INC-20260722-005,2026-07-22 11:42:51,PCF,Delhi,Policy Update Failure,Policy Control Error,Medium,Open
+INC-20260722-006,2026-07-22 12:05:36,AUSF,Pune,Authentication Failure,Authentication Timeout,High,Open
+INC-20260722-007,2026-07-22 12:26:58,UPF,Bangalore,GTP Tunnel Failure,GTP-U Tunnel Lost,Critical,Open
+INC-20260722-008,2026-07-22 13:01:24,SMF,Hyderabad,PDU Session Failure,PDU Session Reject,High,Open

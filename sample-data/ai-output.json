@@ -1,0 +1,22 @@
+{
+  "incident_id": "INC-20260722-001",
+  "network_element": "UPF",
+  "issue_type": "PFCP Association Failure",
+  "severity": "Critical",
+  "priority": "P1",
+  "root_cause": "UPF lost communication with the SMF due to PFCP session timeout, resulting in user plane traffic disruption.",
+  "recommendation": [
+    "Verify N4 interface connectivity.",
+    "Restart PFCP association.",
+    "Check UPF and SMF logs for timeout events.",
+    "Validate firewall and routing configurations.",
+    "Monitor user plane recovery after restart."
+  ],
+  "assignment_team": "Core Network Team",
+  "estimated_resolution_time": "30 Minutes",
+  "business_impact": "High - Active subscriber sessions may experience data service interruption.",
+  "escalation_required": true,
+  "confidence_score": "97%",
+  "generated_by": "Groq LLM",
+  "workflow": "n8n AI Ticket Automation"
+}
